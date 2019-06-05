@@ -7,58 +7,24 @@
  </ion-header>
  
  <ion-content>
-    <form (submit)="getCurrentPrice()" #formData='ngForm'>
-      <div class="form-group">
-        <ion-label class="col-form-label" for="inputDefault">Enter Stock Symbol </ion-label>
- 
-        <input type="text" placeholder="3 Characters Minimum" class="form-control" id="inputDefault" wtx-context="5639BA45-84DD-41D1-9433-592F71827865"
-        name="symbol" required minlength="3" [(ngModel)]="stock.symbol" pattern="^(.{3,})$" #titleModel="ngModel">
 
-      </div>
-      <ion-button class="btn btn-outline-primary" color="primary" [disabled]="!formData.valid" expand="block">Get Stock data</ion-button>
-    </form>
- 
-    <ng-container *ngIf="errors">
-      <div *ngFor="let error of errors" class="alert alert-dismissible alert-primary">
-        <ion-button type="button" class="close" data-dismiss="alert">&times;</ion-button>
-        <strong>"{{error}}" </strong>  was not found!, please enter another symbol.
-      </div>
-    </ng-container>
- 
- 
-    <div *ngIf="stocks && stocks.length>0">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Stock Ticker Symbol</th>
-            <th scope="col">Current Price of Symbol</th>
-            <th scope="col">Compare to Previous Day</th>
-            <th scope="col">Previous Day's Close Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let stock of stocks">
-            <td>{{stock.name}}</td>
-            <td>{{stock.currentPrice}}</td>
-            <ng-container *ngIf="stock.priceCompare>=0">
-              <td id="green">+{{stock.priceCompare}}</td>
-            </ng-container>
-            <ng-container *ngIf="stock.priceCompare<0">
-              <td id="red"> {{stock.priceCompare}}</td>
-            </ng-container>
-            <td>{{stock.priceYesterday}}</td>
-            <td>{{stock.volume}}</td>
-            <td>{{stock.divident}}</td>
-          </tr>
-          <tr *ngFor="let stock of stocks">
-            <i>User History:</i>
-            <li>Your recent stock search: <b>'{{stock.name}}'</b></li>
-            <li>Price change for {{stock.name}}: <b>{{stock.priceCompare}}</b></li>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p><i>Last Update on:</i></p>
-   
+     <ion-item>
+        <ion-input  placeholder="Search.."></ion-input>
+        <button clear item-right>Search</button>
+       </ion-item>
 
+     <ion-list>
+       <i><b>List of stocks:</b></i>
+       <ion-item *ngFor="let stock of stocks">
+         <p>{{ stock.name }}</p>
+       </ion-item>
+     </ion-list>
+
+     
+              <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+                <ion-fab-button (click)="StockAddPage()">
+                  <ion-icon name="arrow-dropleft">Add</ion-icon>
+                </ion-fab-button>
+              </ion-fab>
+    
  </ion-content>

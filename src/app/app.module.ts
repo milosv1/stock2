@@ -18,6 +18,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { MainService } from './main.service';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
+import { StockAddPageModule } from '../app/stock-add/stock-add.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +28,7 @@ import { FormsModule } from '@angular/forms';
     HttpModule,
     FormsModule,
     IonicModule.forRoot(),
+    StockAddPageModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,

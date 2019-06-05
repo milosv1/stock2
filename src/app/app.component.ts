@@ -88,6 +88,11 @@ export class AppComponent {
               url: '/home',
               icon: 'home'
               },
+             // {
+               // title:'stock-add',
+                //url: '/stock-add',
+                //icon:'list'
+              //},
              //{
            // title: 'List',
            // url: '/list',

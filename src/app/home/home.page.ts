@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms'; 
 import { DataService } from '../data.service';
 import { AuthService } from '../auth.service';
+import { StockAddPage } from '../stock-add/stock-add.page';
+import { ModalController } from '@ionic/angular';
+
 
 
 @Component({
@@ -15,8 +18,9 @@ export class HomePage {
   stock: object;
   formGroup: FormGroup;
   errors: string[];
+ 
 
-  stocks: {
+  stocks:{
     name: string,
     currentPrice: number, 
     priceCompare: string, 
@@ -26,11 +30,16 @@ export class HomePage {
     private _mainService: MainService,
     private router: Router,
     private dataService: DataService,
-    private authService: AuthService
+    private authService: AuthService,
+    public modalController: ModalController
   
   ) {
     this.stock = { symbol: ''};
   }
+
+  
+    //get collections from firebase (this.stocks = ...)
+  
 
   getCurrentPrice(){
     this.errors = [];
@@ -55,6 +64,13 @@ export class HomePage {
       this.stocks.push(retrievedStock);
       this.stock = {symbol: ''};
     })
+  }
+
+  async StockAddPage(){
+      const modal = await this.modalController.create({
+        component: StockAddPage
+      });
+      return await modal.present();
   }
 
 }

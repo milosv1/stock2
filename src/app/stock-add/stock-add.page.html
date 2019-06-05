@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>stock-add</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-item>
+    <ion-input placeholder="Symbol" [(ngModel)]="stockSymbol"></ion-input>
+</ion-item>
+
+<ion-item>
+    <ion-button color='primary' expand="full" (click)="findStock()">Find</ion-button>
+   </ion-item>
+
+<ion-item>
+<ion-button color='primary' expand="full">Save!</ion-button>
+</ion-item>
+
+
+</ion-content>
