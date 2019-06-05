@@ -11,12 +11,11 @@
       <div class="form-group">
         <ion-label class="col-form-label" for="inputDefault">Enter Stock Symbol </ion-label>
  
-        <input type="text" placeholder="3 Characters Minimum" expand="block" class="form-control" id="inputDefault" wtx-context="5639BA45-84DD-41D1-9433-592F71827865"
+        <input type="text" placeholder="3 Characters Minimum" class="form-control" id="inputDefault" wtx-context="5639BA45-84DD-41D1-9433-592F71827865"
         name="symbol" required minlength="3" [(ngModel)]="stock.symbol" pattern="^(.{3,})$" #titleModel="ngModel">
 
       </div>
       <ion-button class="btn btn-outline-primary" color="primary" [disabled]="!formData.valid" expand="block">Get Stock data</ion-button>
-      <ion-button class="btn btn-outline-primary" color="primary" [disabled]="!formData.valid" expand="block">Save to list</ion-button> 
     </form>
  
     <ng-container *ngIf="errors">
