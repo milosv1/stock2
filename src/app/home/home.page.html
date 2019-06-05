@@ -1,44 +1,65 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
     <ion-title>
-      Home
+      Stock Market App
     </ion-title>
   </ion-toolbar>
-</ion-header>
+ </ion-header>
+ 
+ <ion-content>
+    <form (submit)="getCurrentPrice()" #formData='ngForm'>
+      <div class="form-group">
+        <ion-label class="col-form-label" for="inputDefault">Enter Stock Symbol </ion-label>
+ 
+        <input type="text" placeholder="3 Characters Minimum" expand="block" class="form-control" id="inputDefault" wtx-context="5639BA45-84DD-41D1-9433-592F71827865"
+        name="symbol" required minlength="3" [(ngModel)]="stock.symbol" pattern="^(.{3,})$" #titleModel="ngModel">
 
-<ion-content>
-    <ion-card class="welcome-card">
-      <ion-img src="/assets/shapes.svg"></ion-img>
-      <ion-card-header>
-        <ion-card-subtitle>Get Started</ion-card-subtitle>
-        <ion-card-title>Welcome to Ionic</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Now that your app has been created, you'll want to start building out features and components. Check out some of the resources below for next steps.</p>
-      </ion-card-content>
-    </ion-card>
-    <ion-list lines="none">
-      <ion-list-header>
-        <ion-label>Resources</ion-label>
-      </ion-list-header>
-      <ion-item href="https://ionicframework.com/docs/">
-        <ion-icon slot="start" color="medium" name="book"></ion-icon>
-        <ion-label>Ionic Documentation</ion-label>
-      </ion-item>
-      <ion-item href="https://ionicframework.com/docs/building/scaffolding">
-        <ion-icon slot="start" color="medium" name="build"></ion-icon>
-        <ion-label>Scaffold Out Your App</ion-label>
-      </ion-item>
-      <ion-item href="https://ionicframework.com/docs/layout/structure">
-        <ion-icon slot="start" color="medium" name="grid"></ion-icon>
-        <ion-label>Change Your App Layout</ion-label>
-      </ion-item>
-      <ion-item href="https://ionicframework.com/docs/theming/basics">
-        <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
-        <ion-label>Theme Your App</ion-label>
-      </ion-item>
-    </ion-list>
-</ion-content>
+      </div>
+      <ion-button class="btn btn-outline-primary" color="primary" [disabled]="!formData.valid" expand="block">Get Stock data</ion-button>
+      <ion-button class="btn btn-outline-primary" color="primary" [disabled]="!formData.valid" expand="block">Save to list</ion-button> 
+    </form>
+ 
+    <ng-container *ngIf="errors">
+      <div *ngFor="let error of errors" class="alert alert-dismissible alert-primary">
+        <ion-button type="button" class="close" data-dismiss="alert">&times;</ion-button>
+        <strong>"{{error}}" </strong>  was not found!, please enter another symbol.
+      </div>
+    </ng-container>
+ 
+ 
+    <div *ngIf="stocks && stocks.length>0">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Stock Ticker Symbol</th>
+            <th scope="col">Current Price of Symbol</th>
+            <th scope="col">Compare to Previous Day</th>
+            <th scope="col">Previous Day's Close Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let stock of stocks">
+            <td>{{stock.name}}</td>
+            <td>{{stock.currentPrice}}</td>
+            <ng-container *ngIf="stock.priceCompare>=0">
+              <td id="green">+{{stock.priceCompare}}</td>
+            </ng-container>
+            <ng-container *ngIf="stock.priceCompare<0">
+              <td id="red"> {{stock.priceCompare}}</td>
+            </ng-container>
+            <td>{{stock.priceYesterday}}</td>
+            <td>{{stock.volume}}</td>
+            <td>{{stock.divident}}</td>
+          </tr>
+          <tr *ngFor="let stock of stocks">
+            <i>User History:</i>
+            <li>Your recent stock search: <b>'{{stock.name}}'</b></li>
+            <li>Price change for {{stock.name}}: <b>{{stock.priceCompare}}</b></li>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p><i>Last Update on:</i></p>
+   
+
+ </ion-content>

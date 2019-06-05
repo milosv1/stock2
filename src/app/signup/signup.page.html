@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+    <ion-title>signup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form id="signup" [formGroup]="signUpForm" (submit) = "signUp(signUpForm.value)">
+    <ion-list>
+      <ion-item>
+        <ion-label>Email</ion-label>
+        <ion-input type="email" placeholder="johncitizen@gmail.com" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Password</ion-label>
+      <ion-input type="password" placeholder="minmum 6 characters" formControlName="password"></ion-input>
+    </ion-item>
+    </ion-list>
+    <ion-button type="submit" [disabled]="!signUpForm.valid">Sign up</ion-button>
+    <ion-item lines="none">
+      Already have an account? <a routerLink="/signin">Sign In</a>
+    </ion-item>
+  </form>
+</ion-content>

@@ -1,4 +1,10 @@
 import { Component } from '@angular/core';
+import {MainService} from '../main.service';
+import { Router } from '@angular/router';
+import { FormGroup } from '@angular/forms'; 
+import { DataService } from '../data.service';
+import { AuthService } from '../auth.service';
+
 
 @Component({
   selector: 'app-home',
@@ -6,7 +12,49 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  stock: object;
+  formGroup: FormGroup;
+  errors: string[];
 
-  constructor() {}
+  stocks: {
+    name: string,
+    currentPrice: number, 
+    priceCompare: string, 
+    priceYesterday: number
+  }[];
+  constructor(
+    private _mainService: MainService,
+    private router: Router,
+    private dataService: DataService,
+    private authService: AuthService
+  
+  ) {
+    this.stock = { symbol: ''};
+  }
+
+  getCurrentPrice(){
+    this.errors = [];
+    this.stocks = [];
+    this._mainService.getCurrentPrice(this.stock,(stockSymbol, valid) => {
+      if(valid === true){
+        this.getPrice(stockSymbol);
+      }else{
+        this.errors.push(stockSymbol);
+        this.stock = { symbol: ''};
+      }
+    })
+  }
+
+  getPrice(stockSymbol){
+    this._mainService.getPrice(stockSymbol, (Name, CurrentPrice, PriceYesterday) => {
+      var retrievedStock = { name: Name,
+                             currentPrice: CurrentPrice,
+                             priceCompare:(CurrentPrice - PriceYesterday).toFixed(2),
+                             priceYesterday:PriceYesterday};
+
+      this.stocks.push(retrievedStock);
+      this.stock = {symbol: ''};
+    })
+  }
 
 }

@@ -1,0 +1,17 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>
+        History of Stock Searches
+      </ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+ <ion-content>
+  <ion-item *ngFor="let stock of stocks"></ion-item>
+    <li>{{stock.name}}</li>
+    <li>{{stock.priceCompare}}</li>
+ </ion-content>
+    
