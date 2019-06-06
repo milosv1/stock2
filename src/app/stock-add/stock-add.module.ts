@@ -6,6 +6,8 @@ import { IonicModule } from '@ionic/angular';
 import { StockAddPage } from './stock-add.page';
 //we need this mainservice to be able to retreieve the info from the site.>>(stockprice)
 import { MainService } from '../main.service';
+//retrieve requests from the API - Alpha Vantage.
+import { HttpClientModule } from '@angular/common/http';
 
 
 
@@ -21,6 +23,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+    HttpClientModule,
     RouterModule.forChild(routes)
   ],
   declarations: [StockAddPage]
