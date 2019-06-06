@@ -17,11 +17,10 @@ export class AuthService {
         this.auth.next(null);
       }
     })
-
-
   }
         //signUp func.... needs email type String, password type string
         test(){}
+        
   signUp(email:string, password:string){
       return new Promise((resolve, reject)=>{
         this.afAuth.auth.createUserWithEmailAndPassword(email, password)

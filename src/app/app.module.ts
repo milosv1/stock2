@@ -19,6 +19,8 @@ import { MainService } from './main.service';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { StockAddPageModule } from '../app/stock-add/stock-add.module';
+//this was added recently.
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +34,9 @@ import { StockAddPageModule } from '../app/stock-add/stock-add.module';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    //imported recently also..
+    HttpClientModule
   ],
   providers: [
     StatusBar,
