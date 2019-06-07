@@ -10,15 +10,15 @@
 </ion-item>
 
 <ion-item>
-    <ion-button color='primary' expand="full" (click)="findStock()">Find</ion-button>
+    <ion-button color='primary' expand="block" (click)="findStock()">Find</ion-button>
    </ion-item>
 
 <ion-item>
-<ion-button color='primary' expand="full" (click)="save()">Save!</ion-button>
+<ion-button color='primary' expand="block" (click)="save()">Save!</ion-button>
 </ion-item>
 
 <ion-item>
- <ion-list></ion-list>
+ <ion-list>Current price of {{stockSymbol}}: ${{currentStockPrice}}</ion-list>
 </ion-item>
 
 </ion-content>

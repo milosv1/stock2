@@ -10,11 +10,9 @@ import { Http } from '@angular/http';
   styleUrls: ['./stock-add.page.scss'],
 })
 export class StockAddPage implements OnInit {
- 
+  currentStockPrice:Number;
   stock: object;
   symbol: object;
-  
-  
 
   errors: string[];
 
@@ -36,7 +34,7 @@ stockSymbol: string;
     private http: Http,
     public alertController: AlertController,
     public httpClientModule: HttpClientModule,
-   
+  // public ope
    
   ) { }
 
@@ -60,14 +58,16 @@ stockSymbol: string;
          
          let metaData = jsonParseResp["Meta Data"];
          let lastRefresh = metaData["3. Last Refreshed"]
-         console.log("last", lastRefresh);
+       //getting the most updated updated price here.
+         console.log("last Refreshed", lastRefresh);
          
          let timeSeries = jsonParseResp["Time Series (1min)"]
          let lastRefreshData = timeSeries[lastRefresh]
+         //now that we got here we can view the open price being the most current price
          let openData = lastRefreshData["1. open"]
 
          console.log("price: ", openData)
-        
+          this.currentStockPrice = openData;
         this.presentAlert();
        
         
