@@ -3,6 +3,8 @@ import {MainService} from '../main.service';
 import { HttpClientModule, HttpClient, HttpResponse } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { Http } from '@angular/http';
+//we need this to add stuff into the collections.
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 
 @Component({
   selector: 'app-stock-add',
@@ -10,9 +12,12 @@ import { Http } from '@angular/http';
   styleUrls: ['./stock-add.page.scss'],
 })
 export class StockAddPage implements OnInit {
+
   currentStockPrice:Number;
-  stock: object;
-  symbol: object;
+
+   //stock: string;
+
+  //symbol: object;
 
   errors: string[];
 
@@ -23,18 +28,22 @@ export class StockAddPage implements OnInit {
      priceYesterday: number
 }[];
 
-keys: string [];
-// name:string;
- //price: number;[];
-
+ //we need to push this into the DB and 
+ //ALSO dont forget the openData which is the current price.
 stockSymbol: string;
+
+//this is what is being pushed into the collection.
+stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks');
+
+
+
   //_http: any;
   constructor(
     private _mainService: MainService,
     private http: Http,
     public alertController: AlertController,
     public httpClientModule: HttpClientModule,
-  // public ope
+    public afs: AngularFirestore
    
   ) { }
 
@@ -87,10 +96,10 @@ stockSymbol: string;
   }
 
   
-async save(){
+  saveStocks(){
 
-
-
+    
+    
 }
 
 

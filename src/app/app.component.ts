@@ -62,8 +62,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private afAuth:AngularFireAuth,
-    private router:Router,
-   
+    private router:Router
   ) {
     this.initializeApp();
     this.checkAuthStatus();
