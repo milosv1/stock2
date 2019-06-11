@@ -97,8 +97,15 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
 
   
   saveStocks(){
-
-    
+//in the users collection we hold the following variables.
+    this.afs.collection('users').add({
+      //time added into collection + date
+      timestamp: new Date(),
+      //what stock symbol was searched.
+      stock: this.stockSymbol,
+      //and also the current price AKA -- open price
+      price: this.currentStockPrice
+    })
     
 }
 
