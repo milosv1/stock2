@@ -41,6 +41,9 @@ export class AuthService {
       this.afAuth.auth.signInWithEmailAndPassword(email,password).then((response) => {resolve(response)}).catch((error) =>{reject(error)});
     })
   }
+//get user
+  getUser(){
+    return this.afAuth.auth.currentUser;
+  }
 
-  
 }

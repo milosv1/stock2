@@ -5,6 +5,7 @@ import { AlertController } from '@ionic/angular';
 import { Http } from '@angular/http';
 //we need this to add stuff into the collections.
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-stock-add',
@@ -15,6 +16,7 @@ export class StockAddPage implements OnInit {
 
   currentStockPrice:Number;
 
+  items: string[];
    //stock: string;
 
   //symbol: object;
@@ -43,11 +45,13 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
     private http: Http,
     public alertController: AlertController,
     public httpClientModule: HttpClientModule,
-    public afs: AngularFirestore
+    public afs: AngularFirestore,
+    private authService: AuthService 
    
   ) { }
 
   ngOnInit() {
+   
    
 
   }
@@ -98,15 +102,37 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
   
   saveStocks(){
 //in the users collection we hold the following variables.
-    this.afs.collection('users').add({
+    console.log("uid: ", this.authService.getUser());
+    const stockID = this.afs.createId();
+    const uid:string = this.authService.getUser().uid;
+    const stock = {
+      //get uid
+      //uid: this.authService.getUser().uid,
       //time added into collection + date
       timestamp: new Date(),
       //what stock symbol was searched.
       stock: this.stockSymbol,
       //and also the current price AKA -- open price
-      price: this.currentStockPrice
-    })
+      price: this.currentStockPrice,
+      stockID: stockID
+    }
     
+    //this.afs.doc(`stocks/${stockID}`).set(stock);
+    this.afs.doc(`users/${uid}/stocks/${stockID}`).set(stock);
+    //show saved alert!
+    this.presentSavedInfoAlert();
+    
+}
+
+async presentSavedInfoAlert() {
+  const alert = await this.alertController.create({
+    header: 'Saved!',
+   // subHeader: '',
+    message: 'Saved ' + this.stockSymbol + ' ' + ' into collections',
+    //buttons: ['Thanks!']
+  });
+
+  await alert.present();
 }
 
 
