@@ -11,11 +11,11 @@ export class AuthService {
   constructor(private afAuth:AngularFireAuth) { 
 
     this.afAuth.authState.subscribe((user) => {
-      if( user ){
-        this.auth.next(user);
-      }else{
-        this.auth.next(null);
-      }
+      // if( user ){
+      //   this.auth.next(user);
+      // }else{
+      //   this.auth.next(null);
+      // }
     })
   }
         //signUp func.... needs email type String, password type string
@@ -41,7 +41,7 @@ export class AuthService {
       this.afAuth.auth.signInWithEmailAndPassword(email,password).then((response) => {resolve(response)}).catch((error) =>{reject(error)});
     })
   }
-//get user
+//get current user.
   getUser(){
     return this.afAuth.auth.currentUser;
   }

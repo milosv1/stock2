@@ -1,4 +1,9 @@
 <ion-header>
+    <ion-buttons slot="start">
+        <ion-button icon-only (click)="dismissModal()">
+          <ion-icon name="close"></ion-icon>
+        </ion-button>
+      </ion-buttons>
   <ion-toolbar>
     <ion-title>Find and Add Stock Tickers</ion-title>
   </ion-toolbar>
@@ -24,5 +29,7 @@
 <ion-item>
     <ion-list>Current price: <b>${{currentStockPrice}}</b> for '{{stockSymbol}}'</ion-list>
 </ion-item>
+
+
 
 </ion-content>

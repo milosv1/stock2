@@ -30,6 +30,7 @@ signInForm: FormGroup;
     this.authService.signIn(formData.email, formData.password)
     .then((response) => {
       //signin is good!
+      console.log("Sign in success!!!");
       this.router.navigate(['/home']);
     })
     .catch((error) => {console.log(error) })

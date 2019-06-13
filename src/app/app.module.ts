@@ -14,7 +14,7 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFirestoreModule, AngularFirestoreCollection } from 'angularfire2/firestore';
 //after importing these items we need to ensure they're added to the appropriate places below
 import { MainService } from './main.service';
 import { HttpModule } from '@angular/http';
@@ -24,7 +24,7 @@ import { StockAddPageModule } from '../app/stock-add/stock-add.module';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent], 
   entryComponents: [],
   imports: [
     BrowserModule,
@@ -40,11 +40,13 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     //added this because we are using firestore.
     AngularFirestoreModule
+    
   ],
   providers: [
     StatusBar,
     MainService,
     SplashScreen,
+    
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

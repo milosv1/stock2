@@ -4,10 +4,13 @@ import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms'; 
 import { DataService } from '../data.service';
 import { AuthService } from '../auth.service';
-import { StockAddPage } from '../stock-add/stock-add.page';
+//import { StockAddPage } from '../stock-add/stock-add.page';
 import { ModalController } from '@ionic/angular';
+import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import { Stocks } from '../models/stocks.interface';
+import { Observable } from 'rxjs';
 
-
+//AngularFireCollection -- AngularFireStore
 
 @Component({
   selector: 'app-home',
@@ -18,7 +21,9 @@ export class HomePage {
   stock: object;
   formGroup: FormGroup;
   errors: string[];
- 
+ //below to add into list items in homepage.html
+  private stockCollection: AngularFirestoreCollection<Stocks>;
+  stocksToView: Observable<Stocks[]>;
 
   stocks:{
     name: string,
@@ -31,15 +36,33 @@ export class HomePage {
     private router: Router,
     private dataService: DataService,
     private authService: AuthService,
-    public modalController: ModalController
+    public modalController: ModalController,
+    private afs: AngularFirestore
   
   ) {
+
     this.stock = { symbol: ''};
+    
+    //just added these two lines below.
+   this.authService.auth.subscribe((user) => {
+      if( user ){
+        console.log('im logged in');
+        let uid = user.uid;
+        this.stockCollection = afs.collection<Stocks>(`users/${uid}/stocks`);
+        this.stocksToView = this.stockCollection.valueChanges();
+      }
+   });
+    
+
   }
 
-  
     //get collections from firebase (this.stocks = ...)
   
+
+ addStock(stock: Stocks){
+
+  this.stockCollection.add(stock);
+ }
 
   getCurrentPrice(){
     this.errors = [];
@@ -66,11 +89,18 @@ export class HomePage {
     })
   }
 
-  async StockAddPage(){
-      const modal = await this.modalController.create({
-        component: StockAddPage
-      });
-      return await modal.present();
+  public async StockAddPage(){
+       const modal = await this.modalController.create({
+         component: this.StockAddPage
+        // re-add StockAddPage
+       });
+       return await modal.present();
+  }
+
+  async dissmissPage(){
+    this.modalController.dismiss();
+    const modal = await this.modalController.getTop();
+    this.modalController.dismiss();
   }
 
 }

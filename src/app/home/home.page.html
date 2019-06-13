@@ -5,29 +5,24 @@
     </ion-title>
   </ion-toolbar>
  </ion-header>
- 
+
  <ion-content>
-
      <ion-item>
-        <ion-input  placeholder="Search.."></ion-input>
+        <ion-input placeholder="Search.."></ion-input>
         <button clear item-right>Search</button>
-       </ion-item>
+     </ion-item>
 
-     <ion-list>
-       <b>List of stocks searched</b>
+        <ion-item>
+          <b>List of stocks searched</b>
 
-       <div *ngFor="stock of stocks">
-        <ion-list>
-          {{stock}}
-        </ion-list>
-       </div>
-       
-     </ion-list>
+          <ion-item *ngFor="let stock of stocks">
+            <p>{{stocks.name}}</p>
+          </ion-item>
 
+        </ion-item>          
               <ion-fab vertical="bottom" horizontal="end" slot="fixed">
                 <ion-fab-button (click)="StockAddPage()">
                   <ion-icon name="arrow-dropleft">Add</ion-icon>
                 </ion-fab-button>
               </ion-fab>
-    
  </ion-content>

@@ -9,8 +9,6 @@ import { MainService } from '../main.service';
 //retrieve requests from the API - Alpha Vantage.
 import { HttpClientModule } from '@angular/common/http';
 
-
-
 const routes: Routes = [
   {
     path: '',

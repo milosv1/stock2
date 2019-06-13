@@ -11,12 +11,13 @@ import { HomePage } from './home.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild([
-      {
+     StockAddPageModule,
+   RouterModule.forChild([
+     {
         path: '',
-        component: HomePage
-      }
-    ])
+       component: HomePage
+     }
+   ])
   ],
   declarations: [HomePage]
 })

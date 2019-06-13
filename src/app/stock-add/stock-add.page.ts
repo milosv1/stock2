@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {MainService} from '../main.service';
 import { HttpClientModule, HttpClient, HttpResponse } from '@angular/common/http';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Http } from '@angular/http';
 //we need this to add stuff into the collections.
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AuthService } from '../auth.service';
+
 
 @Component({
   selector: 'app-stock-add',
@@ -46,7 +47,8 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
     public alertController: AlertController,
     public httpClientModule: HttpClientModule,
     public afs: AngularFirestore,
-    private authService: AuthService 
+    private authService: AuthService,
+    private modalCtrl: ModalController
    
   ) { }
 
@@ -133,6 +135,12 @@ async presentSavedInfoAlert() {
   });
 
   await alert.present();
+}
+
+async dismissModal() {
+  this.modalCtrl.dismiss();
+  const modal = await this.modalCtrl.getTop();
+  modal.dismiss();
 }
 
 
