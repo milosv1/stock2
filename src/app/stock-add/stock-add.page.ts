@@ -5,7 +5,7 @@ import { AlertController } from '@ionic/angular';
 import { Http } from '@angular/http';
 //we need this to add stuff into the collections.
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-
+import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-stock-add',
   templateUrl: './stock-add.page.html',
@@ -43,7 +43,8 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
     private http: Http,
     public alertController: AlertController,
     public httpClientModule: HttpClientModule,
-    public afs: AngularFirestore
+    public afs: AngularFirestore,
+    public authService:AuthService
    
   ) { }
 
@@ -98,14 +99,22 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
   
   saveStocks(){
 //in the users collection we hold the following variables.
-    this.afs.collection('users').add({
-      //time added into collection + date
-      timestamp: new Date(),
-      //what stock symbol was searched.
-      stock: this.stockSymbol,
-      //and also the current price AKA -- open price
-      price: this.currentStockPrice
-    })
+    //  this.afs.collection('users').add({
+     //in the users collection we hold the following variables.
+     console.log("uid: ", this.authService.getUser());
+     const stockID = this.afs.createId();
+     const uid:string = this.authService.getUser().uid;
+
+      const stock = {
+        //items in which we are saving into Firebase.
+        timestamp : new Date(),
+        stock: this.stockSymbol,
+        price: this.currentStockPrice,
+        stockID: stockID
+      }
+      //save into the following firestore structure.
+      this.afs.doc(`users/${uid}/stocks/${stockID}`).set(stock);
+    
     
 }
 
