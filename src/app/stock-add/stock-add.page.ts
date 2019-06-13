@@ -120,4 +120,5 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
 
 
 
+
 }
