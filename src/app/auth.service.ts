@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-//we need this for injection..
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +12,9 @@ export class AuthService {
 
     this.afAuth.authState.subscribe((user) => {
       if( user ){
-        this.auth.next(user);
+        
+       this.auth.next(user);
+      
       }else{
         this.auth.next(null);
       }

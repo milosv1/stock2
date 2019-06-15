@@ -26,7 +26,6 @@ signInForm: FormGroup;
   }
 
   signIn(formData){
-
     this.authService.signIn(formData.email, formData.password)
     .then((response) => {
       //signin is good!

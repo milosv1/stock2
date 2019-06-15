@@ -110,11 +110,12 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
         timestamp : new Date(),
         stock: this.stockSymbol,
         price: this.currentStockPrice,
-        stockID: stockID
+        stockID: stockID,
+        uid: uid
       }
       //save into the following firestore structure.
       this.afs.doc(`users/${uid}/stocks/${stockID}`).set(stock);
-    
+      const stocks = this.afs.doc(`users/${uid}/stocks/`).get()
     
 }
 

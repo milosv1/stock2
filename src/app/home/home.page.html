@@ -15,8 +15,8 @@
 
      <ion-list>
        <i><b>List of stocks searched</b></i>
-       <ion-item>
-         <p></p>
+       <ion-item *ngFor="let stock of savedStocks">
+         <p>{{stock.stock}}</p>
        </ion-item>
        
      </ion-list>
