@@ -115,7 +115,9 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
       }
       //save into the following firestore structure.
       this.afs.doc(`users/${uid}/stocks/${stockID}`).set(stock);
-      const stocks = this.afs.doc(`users/${uid}/stocks/`).get()
+      const stocks = this.afs.doc(`users/${uid}/stocks/${stockID}`).get()
+      //added $StockID into the query...
+      console.log("Got it!", stocks);
     
 }
 

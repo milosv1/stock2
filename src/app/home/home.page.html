@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Stock Market App
+      Stock Market Lister Project
     </ion-title>
   </ion-toolbar>
  </ion-header>
@@ -12,13 +12,17 @@
         <ion-input  placeholder="Search.."></ion-input>
         <button clear item-right>Search</button>
        </ion-item>
+      
 
      <ion-list>
-       <i><b>List of stocks searched</b></i>
+       <b>Your stocks</b>
        <ion-item *ngFor="let stock of savedStocks">
          <p>{{stock.stock}}</p>
        </ion-item>
        
+       <ion-item>
+         <p><i>Developed By Milos.Vuksanovic</i></p>
+       </ion-item>
      </ion-list>
 
               <ion-fab vertical="bottom" horizontal="end" slot="fixed">
