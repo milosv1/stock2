@@ -1,11 +1,27 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>stock-add</ion-title>
+    <ion-title>Add your Stock tickers</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-<ion-item>
+    <ion-list>
+        <form [formGroup]="symbolForm">
+          <ion-item>
+              <ion-searchbar debounce="500" formControlName="symbolSearch" placeholder="Search here by a stock Ticker"></ion-searchbar>
+          </ion-item>
+        </form>
+
+        <ion-list-header *ngIf="suggestSymbols.length > 0">
+            <h3>Tickers found</h3>
+          </ion-list-header>
+
+          <ion-item *ngFor="let stock of suggestSymbols" detail="true">
+              <ion-label><strong>{{stock.Symbol}}</strong> <br>{{stock['Company Name']}}</ion-label> 
+          </ion-item>
+          </ion-list>
+</ion-content>
+<!--<ion-item>
     <ion-input placeholder="Symbol" [(ngModel)]="stockSymbol"></ion-input>
 </ion-item>
 
@@ -19,6 +35,14 @@
 
 <ion-item>
     <ion-list>Current price: <b>${{currentStockPrice}}</b> for '{{stockSymbol}}'</ion-list>
-</ion-item>
-
-</ion-content>
+</ion-item> -->
+<ion-footer>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-button (click)="closeSearchSection()">Close</ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="saveStocks()">Save!</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+</ion-footer>
