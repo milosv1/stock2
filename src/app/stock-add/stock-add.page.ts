@@ -1,19 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import {MainService} from '../main.service';
 import { HttpClientModule, HttpClient, HttpResponse } from '@angular/common/http';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Http } from '@angular/http';
 //we need this to add stuff into the collections.
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AuthService } from '../auth.service';
+
+import { DataService } from '../data.service';
+import { Observable } from 'rxjs';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Symbol } from '../models/symbol.interface';
 @Component({
   selector: 'app-stock-add',
   templateUrl: './stock-add.page.html',
   styleUrls: ['./stock-add.page.scss'],
 })
 export class StockAddPage implements OnInit {
+//just added these to help bring suggestions into my search.
 
-  currentStockPrice:Number;
+loading:boolean = true;
+symbols:Array<any>;
+suggestSymbols:Array<any> = [];
+symbolForm: FormGroup;
+items: string[];
+currentStockPrice:Number;
+
+
+
+  //currentStockPrice:Number;
 
    //stock: string;
 
@@ -44,13 +59,45 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
     public alertController: AlertController,
     public httpClientModule: HttpClientModule,
     public afs: AngularFirestore,
-    public authService:AuthService
+    public authService:AuthService,
+    private formBuilder: FormBuilder,
+    private dataService: DataService,
+    private modalController: ModalController
    
   ) { }
 
   ngOnInit() {
-   
+    this.symbolForm = this.formBuilder.group({
+      symbolSearch: ['', [Validators.required] ]
+    });
+    this.symbolForm.valueChanges.subscribe((search) => {
+      if(search.symbolSearch.length >0 ){
+        this.findSymbols(search.symbolSearch);
+      }
+      else{
+        this.suggestSymbols = [];
+      }
+    });
+    this.getSymbols();
 
+  }
+
+  getSymbols(){
+    this.dataService.symbols$.subscribe((values)=>{
+      this.loading = false;
+      this.symbols = values;
+      console.log( this.symbols );
+    });
+  }
+
+  findSymbols( searchTerm:string){
+    console.log( searchTerm );
+    this.suggestSymbols = this.symbols.filter((item) =>{
+      if( item.Symbol.toLowerCase().indexOf( searchTerm.toLowerCase() ) !==-1 ){
+        return item;
+      }
+    });
+    console.log( this.suggestSymbols);
   }
 
   //this function searches for the stock then returns if it is not found return error message
@@ -121,7 +168,9 @@ stockCollection: AngularFirestoreCollection<any> = this.afs.collection('stocks')
     
 }
 
-
-
+//close stock-add page via pressing close.
+closeSearchSection(){
+  this.modalController.dismiss();
+}
 
 }
