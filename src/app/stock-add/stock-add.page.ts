@@ -17,7 +17,7 @@ import { Symbol } from '../models/symbol.interface';
   styleUrls: ['./stock-add.page.scss'],
 })
 export class StockAddPage implements OnInit {
-//just added these to help bring suggestions into my search.
+//just added these to help bring suggestions into my search method.
 
 loading:boolean = true;
 symbols:Array<any>;
