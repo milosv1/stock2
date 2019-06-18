@@ -5,7 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { StockAddPageModule } from '../stock-add/stock-add.module'; 
 import { HomePage } from './home.page';
-
+//done
 @NgModule({
   imports: [
     CommonModule,

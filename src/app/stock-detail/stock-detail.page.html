@@ -1,9 +1,38 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>stock-detail</ion-title>
+    <ion-title>Data for {{stock.symbol}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-list>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col><b>Ti</b></ion-col>
+          <ion-col><b>Open</b></ion-col>
+          <ion-col><b>Low</b></ion-col>
+          <ion-col><b>High</b></ion-col>
+          <ion-col><b>Close</b></ion-col>
+          <ion-col><b>Volume</b></ion-col>
+        </ion-row>
+        <ion-row *ngFor="let price of priceData$ | async">
+          <ion-col><ion-note>{{price.time.toDate() | date: 'd/m h:m'}}</ion-note></ion-col>
+          <ion-col>{{price.open | number: '1.2-2'}}</ion-col>
+          <ion-col>{{price.low | number: '1.2-2'}}</ion-col>
+          <ion-col>{{price.high | number: '1.2-2'}}</ion-col>
+          <ion-col>{{price.close | number: '1.2-2'}}</ion-col>
+          <ion-col>{{price.volume}}</ion-col>
+        </ion-row>
+      </ion-grid>
+      
+    </ion-item>
+  </ion-list>
 </ion-content>
+<ion-footer>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+        <ion-button (click)="close()">Close</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>

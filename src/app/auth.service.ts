@@ -1,27 +1,23 @@
 import { Injectable } from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
-
+//we need this for injection..
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
- auth: BehaviorSubject<any>;
+  auth: BehaviorSubject<any> = new BehaviorSubject(null);
 
   constructor(private afAuth:AngularFireAuth) { 
-
     this.afAuth.authState.subscribe((user) => {
       if( user ){
-        
-       this.auth.next(user);
-      
+        this.auth.next(user);
       }else{
         this.auth.next(null);
       }
-    })
+    });
   }
-        //signUp func.... needs email type String, password type string
-        test(){}
+  
         
   signUp(email:string, password:string){
       return new Promise((resolve, reject)=>{
@@ -43,9 +39,9 @@ export class AuthService {
       this.afAuth.auth.signInWithEmailAndPassword(email,password).then((response) => {resolve(response)}).catch((error) =>{reject(error)});
     })
   }
+//get user
   getUser(){
     return this.afAuth.auth.currentUser;
   }
 
-  
 }

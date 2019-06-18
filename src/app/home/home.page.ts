@@ -1,111 +1,96 @@
-import { Component } from '@angular/core';
-import {MainService} from '../main.service';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup } from '@angular/forms'; 
 import { DataService } from '../data.service';
 import { AuthService } from '../auth.service';
 import { StockAddPage } from '../stock-add/stock-add.page';
+import { StockDetailPage } from '../stock-detail/stock-detail.page';
 import { ModalController } from '@ionic/angular';
-import { AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Observable } from 'rxjs';
 import { Stocks } from '../models/stocks.interface';
-//i just aded this stuff...below
-import { AngularFirestore } from 'angularfire2/firestore'; 
-
-
+import { PriceData } from '../models/pricedata.interface';
+//done
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  stock: object;
+export class HomePage implements OnInit {
+  stock:any;
   formGroup: FormGroup;
-  errors: string[];
-  savedStocks: any;
+  errors: Array<string>;
+  
+  followedStocks$:Observable<Stocks[]>;
+  userStocks:Array<Stocks>=[];
 
-  stocks:{
-    name: string,
-    currentPrice: number, 
-    priceCompare: string, 
-    priceYesterday: number
-  }[];
 
   constructor(
-    private _mainService: MainService,
     private router: Router,
     private dataService: DataService,
     private authService: AuthService,
-    public modalController: ModalController,
-    public afs: AngularFirestore,  
+    public modalController: ModalController
+  
   ) {
-    this.stock = { symbol: ''};
-
-    
-
   }
 
-
-  ngOnInit() {
-   //this.getStockList();
-   //const stocks = this.afs.doc(`users/${uid}/stocks/`).valueChanges;
-
-   const uid:string = this.authService.getUser().uid;
-
-    this.afs.collection('users').doc(uid).collection('stocks').valueChanges().subscribe((data) => {
-     this.savedStocks = data;
-     console.log("Saved Stocks: ");
-    });
-  }
-  
-    
-  
-
-  getCurrentPrice(){
-    this.errors = [];
-    this.stocks = [];
-    this._mainService.getCurrentPrice(this.stock,(stockSymbol, valid) => {
-      if(valid === true){
-        this.getPrice(stockSymbol);
-      }else{
-        this.errors.push(stockSymbol);
-        this.stock = { symbol: ''};
+  ngOnInit(){
+    // get collections from firebase (this.stocks = ...)
+    this.authService.auth.subscribe( (user) => {
+      if( user ){
+        let uid = user.uid;
+        this.followedStocks$ = this.dataService.getStocks( uid );
+        this.followedStocks$.subscribe((values) => {
+          values.forEach( item => this.userStocks.push(item) );
+        })
       }
-    })
-  }
-
-
-  getPrice(stockSymbol){
-    this._mainService.getPrice(stockSymbol, (Name, CurrentPrice, PriceYesterday) => {
-      var retrievedStock = { name: Name,
-                             currentPrice: CurrentPrice,
-                             priceCompare:(CurrentPrice - PriceYesterday).toFixed(2),
-                             priceYesterday:PriceYesterday};
-
-      this.stocks.push(retrievedStock);
-      this.stock = {symbol: ''};
-    })
+    });
   }
 
   async StockAddPage(){
       const modal = await this.modalController.create({
         component: StockAddPage
       });
+      //get data from modal when closed
+      modal.onDidDismiss().then((response) => {
+        if( response.data !== undefined ){
+          //get data from the stock-add modal
+          let data = response.data;
+          let stock = {symbol: response.data.symbol }
+          let pricedata = response.data.pricedata;
+          this.dataService.addStock( data );
+          this.dataService.getPriceData(stock).then((response:Observable<PriceData>) => {
+            this.dataService.addPriceData(pricedata);
+          })
+        }
+      });
       return await modal.present();
   }
-
-  getStockList():AngularFirestoreCollection<Stocks>{
-    // console.log(this.afs.collection('stocks'))
-    //const uid:string = this.authService.getUser().uid;
-    
-   const uid:string = this.authService.getUser().uid;
-
-    console.log('auth Service:');
-    console.log(this.authService);
-    this.afs.collection('stocks' , ref => ref.where('uid', '==', uid));
-    console.log('afs.collection');
-    console.log(this.afs.collection);
-    console.log('data', this.afs.collection('stocks' , ref => ref.where('uid', '==', uid)));
-    return this.afs.collection('stocks' , ref => ref.where('uid', '==', uid));;
+  updatePrices(){
+    // update prices for all followed stocks
+    this.userStocks.forEach( (stock) => {
+      //get the latest price
+      this.dataService.getStockBySymbol( stock.symbol )
+      .then( (response:any) => {
+        //get the price data
+        let pricedata = response.pricedata;
+        //create price data collection for the stock
+        this.dataService.getPriceData( stock )
+        .then( (response) => {
+          //add the new price data to stock
+          this.dataService.addPriceData( pricedata );
+        });
+      });
+    });
   }
 
+  async stockDetailPage( stock:Stocks ){
+    //open modal showing stock prices and graph?
+    const modal = await this.modalController.create({
+      component: StockDetailPage,
+      componentProps:{
+        'stock': stock
+      }
+    });
+    return await modal.present();
+  }
 }

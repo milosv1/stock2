@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>
       Stock Market Lister Project
     </ion-title>
@@ -7,28 +10,36 @@
  </ion-header>
  
  <ion-content>
+  <ion-searchbar debounce="500"></ion-searchbar>
+     
 
-     <ion-item>
-        <ion-input  placeholder="Search.."></ion-input>
-        <button clear item-right>Search</button>
-       </ion-item>
+  <ion-list>
+    <!-- <ion-item>
+      <ion-input  placeholder="Search.."></ion-input>
+      <button clear item-right>Search</button>
+    </ion-item> -->
+    <ion-list-header>
+      <h2>Your WatchList</h2>
+    </ion-list-header>
+    <ion-item *ngIf="(followedStocks$ | async)?.length > 0">
+      <ion-button color="primary" (click)="updatePrices()">Update Prices</ion-button>
+    </ion-item>
+    <ion-item *ngFor="let stock of followedStocks$ | async" detail="true" detailIcon="pulse" (click)="stockDetailPage(stock)">
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-label>{{stock.symbol}}</ion-label>
+    </ion-item>
       
-
-     <ion-list>
-       <b>Your stocks</b>
-       <ion-item *ngFor="let stock of savedStocks">
-         <p>{{stock.stock}}</p>
-       </ion-item>
-       
-       <ion-item>
-         <p><i><b>Developed By Milos.Vuksanovic</b></i></p>
-       </ion-item>
-     </ion-list>
-
-              <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-                <ion-fab-button (click)="StockAddPage()">
-                  <ion-icon name="arrow-dropleft">Add</ion-icon>
-                </ion-fab-button>
-              </ion-fab>
+    <ion-item *ngIf="(followedStocks$ | async)?.length==0">
+      <ion-label >
+        Nothing on WatchList
+      </ion-label>
+    </ion-item>
+      
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="StockAddPage()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
     
  </ion-content>

@@ -1,48 +1,83 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Add your Stock tickers</ion-title>
+    <ion-title>Find a stock using a symbol</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-list>
-        <form [formGroup]="symbolForm">
-          <ion-item>
-              <ion-searchbar debounce="500" formControlName="symbolSearch" placeholder="Search here by a stock Ticker"></ion-searchbar>
-          </ion-item>
-        </form>
-
-        <ion-list-header *ngIf="suggestSymbols.length > 0">
-            <h3>Tickers found</h3>
-          </ion-list-header>
-
-          <ion-item *ngFor="let stock of suggestSymbols" detail="true">
-              <ion-label><strong>{{stock.Symbol}}</strong> <br>{{stock['Company Name']}}</ion-label> 
-          </ion-item>
-          </ion-list>
-</ion-content>
-<!--<ion-item>
-    <ion-input placeholder="Symbol" [(ngModel)]="stockSymbol"></ion-input>
-</ion-item>
-
-<ion-item>
-    <ion-button color='primary' expand="full" (click)="findStock()">Find</ion-button>
-</ion-item>
-
-<ion-item>
-    <ion-button color='primary' expand="full" (click)="saveStocks()">Save!</ion-button>
-</ion-item>
-
-<ion-item>
-    <ion-list>Current price: <b>${{currentStockPrice}}</b> for '{{stockSymbol}}'</ion-list>
-</ion-item> -->
-<ion-footer>
-    <ion-toolbar color="primary">
-      <ion-buttons slot="start">
-        <ion-button (click)="closeSearchSection()">Close</ion-button>
-      </ion-buttons>
+  <form [formGroup]="symbolForm">
+    <ion-searchbar debounce="700" formControlName="symbolSearch" placeholder="Search by typing a stock symbol"></ion-searchbar>
+  </form>
+  <ion-list>
+    <ion-item *ngIf="error">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-label color="danger">{{error}}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="full" (click)="symbolForm.reset()">Search Again</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+      
+    </ion-item>
+    <ion-list-header *ngIf="suggestSymbols.length > 0">
+      <h3>We found the following stocks</h3>
+    </ion-list-header>
+    <ion-item *ngFor="let stock of suggestSymbols" detail="true">
+      <ion-label>
+        <strong>{{stock.Symbol}}</strong> <br>
+        {{stock['Company Name']}} <br>
+      </ion-label>
       <ion-buttons slot="end">
-        <ion-button (click)="saveStocks()">Save!</ion-button>
+        <ion-button color="primary" (click)="getStockPrice(stock.Symbol)">Watch</ion-button>
       </ion-buttons>
-    </ion-toolbar>
+    </ion-item>
+    <ion-item *ngIf="loading">
+      <ion-spinner></ion-spinner>
+    </ion-item>
+    <ion-item *ngIf="currentStock">
+      <ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <h1>{{currentStock.symbol}}</h1>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <strong>Open:</strong>{{currentStock.pricedata.open}}<br>
+              <strong>High:</strong>{{currentStock.pricedata.high}}
+            </ion-col>
+            <ion-col>
+              <strong>Low:</strong>{{currentStock.pricedata.low}}<br>
+              <strong>Close:</strong>{{currentStock.pricedata.close}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              at {{currentStock.pricedata.time | date: "EE, dd LLL yyyy hh:mm:ss"}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-button color="primary" expand="full" (click)="save()">Save</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-label>
+        
+    </ion-item>
+  </ion-list>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-footer>
