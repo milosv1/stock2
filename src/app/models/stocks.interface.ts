@@ -1,7 +1,4 @@
+import { PriceData } from './pricedata.interface';
 export interface Stocks {
-    name:string;
-    id: string;
-    stockSymbol: string;
-    stockPrice: number;
-    uid: string;
+   symbol: string;
   }
