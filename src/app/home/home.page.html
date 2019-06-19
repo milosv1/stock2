@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Stock Market Lister Project
+      Stock Market Lister App
     </ion-title>
   </ion-toolbar>
  </ion-header>
@@ -19,7 +19,7 @@
       <button clear item-right>Search</button>
     </ion-item> -->
     <ion-list-header>
-      <h2>Your WatchList</h2>
+      <h2>Stocks you follow</h2>
     </ion-list-header>
     <ion-item *ngIf="(followedStocks$ | async)?.length > 0">
       <ion-button color="primary" (click)="updatePrices()">Update Prices</ion-button>
@@ -31,15 +31,16 @@
       
     <ion-item *ngIf="(followedStocks$ | async)?.length==0">
       <ion-label >
-        Nothing on WatchList
+        You have not followed any stocks
       </ion-label>
     </ion-item>
       
   </ion-list>
+  <!-- floating button -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="StockAddPage()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
     
- </ion-content>
+</ion-content>

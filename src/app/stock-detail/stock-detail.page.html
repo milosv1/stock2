@@ -5,19 +5,34 @@
 </ion-header>
 
 <ion-content>
+  <canvas #chart width="400" height="300" type="line" data="chartData" labels="chartLabels" options="options" ></canvas>
   <ion-list>
     <ion-item>
       <ion-grid>
+
         <ion-row>
-          <ion-col><b>Ti</b></ion-col>
-          <ion-col><b>Open</b></ion-col>
-          <ion-col><b>Low</b></ion-col>
-          <ion-col><b>High</b></ion-col>
-          <ion-col><b>Close</b></ion-col>
-          <ion-col><b>Volume</b></ion-col>
+          <ion-col>
+            <ion-icon name="time"></ion-icon>
+          </ion-col>
+          <ion-col>
+            <strong>Open</strong>
+          </ion-col>
+          <ion-col>
+            <strong>Low</strong>
+          </ion-col>
+          <ion-col>
+            <strong>High</strong>
+          </ion-col>
+          <ion-col>
+            <strong>Close</strong>
+          </ion-col>
+          <ion-col>
+            <strong>Volume</strong>
+          </ion-col>
         </ion-row>
+
         <ion-row *ngFor="let price of priceData$ | async">
-          <ion-col><ion-note>{{price.time.toDate() | date: 'd/m h:m'}}</ion-note></ion-col>
+          <ion-col><ion-note>{{price.time.toDate() | date: 'd/MM hh:mm'}}</ion-note></ion-col>
           <ion-col>{{price.open | number: '1.2-2'}}</ion-col>
           <ion-col>{{price.low | number: '1.2-2'}}</ion-col>
           <ion-col>{{price.high | number: '1.2-2'}}</ion-col>
@@ -30,9 +45,17 @@
   </ion-list>
 </ion-content>
 <ion-footer>
-    <ion-toolbar color="primary">
+    <ion-toolbar color="default">
       <ion-buttons slot="start">
         <ion-button (click)="close()">Close</ion-button>
+        <ion-button color="success" (click)="updateStock()">Update</ion-button>
+        <ion-button color="danger" (click)="deleteStock()">Delete Stock</ion-button>
+      </ion-buttons>
+      <ion-buttons>
+        
+      </ion-buttons>
+      <ion-buttons>
+        
       </ion-buttons>
     </ion-toolbar>
   </ion-footer>
