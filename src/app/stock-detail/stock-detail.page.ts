@@ -81,6 +81,7 @@ chart:any;
 
     
   }
+  //close this particular screen
   close(){
     this.modalController.dismiss();
   }
@@ -88,8 +89,8 @@ chart:any;
   updateStock(){
     this.dataService.updateStockPriceData( this.stock ); 
   }
-
-  async delete(){
+//pressing this button will delete this stock from the list
+  async deleteStock(){
     const  alert = await this.alertController.create({
       header: 'Are you sure?',
       subHeader: 'This action will delete this stock',
