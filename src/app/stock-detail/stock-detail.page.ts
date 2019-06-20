@@ -33,47 +33,59 @@ chart:any;
       this.priceData$ = response;
       this.priceData$.subscribe( (values) => {
         let chartLabels:Array<any> = [];
+        //i got four arrays, which should be holding the price values
         let chartData:Array<number> = [];
+        let chartDataTwo:Array<number> = [];
+        let chartDataThree:Array<number> = [];
+        let chartDataFour:Array<number> = [];
+
         values.forEach( (value, index ) => {
           let date = value.time;
           chartLabels.push( index );
+          //add extra lines to our line graph
+          //these lines depict high-close-open-low prices\
           chartData.push(value.open);
+          chartDataTwo.push(value.close);
+          chartDataThree.push(value.high);
+          chartDataFour.push(value.low);
         });
         this.chart = new Chart(this.chartCanvas.nativeElement,{
+
           type: 'line',
-            data: {
-                labels: chartLabels,
-                datasets: [{
-                    label: `${this.stock.symbol} performance`,
-                    data: chartData,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero:true
-                        }
-                    }]
+          data: {
+            labels: chartLabels,
+            datasets: [
+                {
+                  label: `${this.stock.symbol} open`,
+                  data: chartData,
+                  fill: "false",
+                  borderColor: 'hsla(350, 100%, 50%, 1)',
+                  borderWidth: 1
+                },
+                {
+                  label: `${this.stock.symbol} close`,
+                  data: chartDataTwo,
+                  fill: "false",
+                  borderColor: 'hsla(120, 100%, 50%, 1)',
+                  borderWidth: 1
+                },
+                {
+                  label: `${this.stock.symbol} high`,
+                  data: chartDataThree,
+                  fill: "false",
+                  borderColor: 'hsla(290, 100%, 50%, 1)',
+                  borderWidth: 1
+                },
+                {
+                  label: `${this.stock.symbol} low`,
+                  data: chartDataFour,
+                  fill: "false",
+                  borderColor: 'hsla(190, 100%, 50%, 1)',
+                  borderWidth: 1
                 }
-            }
+            ]
+          },
+          
         });
       });
     });
